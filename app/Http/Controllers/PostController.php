@@ -12,13 +12,13 @@ class PostController extends Controller implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware(middleware: 'auth'),
+            new Middleware(middleware: 'auth', only: ['store']),
         ];
     }
 
     public function index()
     {
-        $posts = Post::paginate(10);
+        $posts = Post::latest()->with(['user', 'likes'])->paginate(10);
         return view('posts.index',[
             'posts' => $posts
         ]);
@@ -32,6 +32,16 @@ class PostController extends Controller implements HasMiddleware
 
         auth()->user()->posts()->create($validated);
 
+        return back();
+    }
+
+    public function destroy(Post $post)
+    {
+        if (!$post->ownedBy(auth()->user())) {
+            dd('no');
+        }
+
+        $post->delete();
         return back();
     }
 }
