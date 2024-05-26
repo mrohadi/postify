@@ -34,6 +34,13 @@
                 @endif
 
                 <div class="mb-4">
+                    <div class="flex items-center">
+                        <input type="checkbox" name="remember" id="remember" class="mr-2">
+                        <label for="remember">Remember me</label>
+                    </div>
+                </div>
+
+                <div class="mb-4">
                     <button type="submit" class="bg-blue-500 text-white px-4 py-3 rounded-lg w-full">Login</button>
                 </div>
             </form>
