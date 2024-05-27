@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PostLiked;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Mail;
 
 class PostLikeController extends Controller implements HasMiddleware
 {
@@ -21,10 +23,16 @@ class PostLikeController extends Controller implements HasMiddleware
         if ($post->likeBy($request->user())) {
             return response(null, 409);
         }
-
         $post->likes()->create([
             'user_id' => $request->user()->id,
         ]);
+
+        // only send an email to never liked post before,
+        // here we are using soft delete to check if the post unlike before,
+        // if the post not unlike before, then send the email
+        if (!$post->likes()->onlyTrashed()->where('user_id', $request->user()->id)->count()) {
+            Mail::to($post->user)->send(new PostLiked(auth()->user(), $post));
+        }
 
         return back();
     }
