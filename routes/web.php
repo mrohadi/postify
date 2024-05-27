@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostLikeController;
+use App\Http\Controllers\UserPostController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function() {
@@ -25,6 +26,9 @@ Route::post('/auth/login', [LoginController::class, 'store']);
 
 Route::post('/auth/logout', [LogoutController::class, 'store'])
     ->name('logout');
+
+Route::get('/users/{user:username}/posts', [UserPostController::class, 'index'])
+    ->name('user.posts');
 
 Route::get('/posts', [PostController::class, 'index'])
     ->name('posts');
