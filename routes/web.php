@@ -9,12 +9,7 @@ use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\UserPostController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function() {
-    return view('home');
-})->name('home');
-
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->name('dashboard');
+Route::get('/', [PostController::class, 'index'])->name('home');
 
 Route::get('/auth/register', [RegisterController::class, 'index'])
     ->name('register');
@@ -30,11 +25,9 @@ Route::post('/auth/logout', [LogoutController::class, 'store'])
 Route::get('/users/{user:username}/posts', [UserPostController::class, 'index'])
     ->name('user.posts');
 
-Route::get('/posts', [PostController::class, 'index'])
-    ->name('posts');
 Route::get('/posts/{post}', [PostController::class, 'show'])
     ->name('posts.show');
-Route::post('/posts', [PostController::class, 'store']);
+Route::post('/posts', [PostController::class, 'store'])->name('posts');
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])
     ->name('posts.destroy');
 

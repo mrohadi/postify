@@ -1,8 +1,15 @@
-@extends("layouts.app")
+@extends("layouts.auth")
 
 @section("content")
-    <section class="flex justify-center">
+    <section class="flex flex-col justify-center items-center min-h-screen">
+        <div class="flex justify-center items-center mb-4">
+            <img src="/images/my-logo.png" alt="" width="80" height="80">
+            <p class="text-3xl">Postify</p>
+        </div>
+
         <div class="w-4/12 bg-white p-6 rounded-lg">
+            <h1 class="text-2xl mb-4">Sign up new account</h1>
+
             <form action="{{ route('register') }}" method="post">
                 @csrf
                 <div class="mb-4">
@@ -56,6 +63,14 @@
 
                 <div class="mb-4">
                     <button type="submit" class="bg-blue-500 text-white px-4 py-3 rounded-lg w-full">Register</button>
+                </div>
+
+                <div>
+                    <p>Already have an account?
+                        <span>
+                            <a href="{{ route('login') }}" class="font-medium text-blue-500 hover:underline">Sign in</a>
+                        </span>
+                    </p>
                 </div>
             </form>
         </div>
