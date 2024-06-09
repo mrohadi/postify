@@ -3,9 +3,9 @@
 
 {{ $liker->name }} liked one of your posts
 
-@component('mail::button', ['url' => route('posts.show', $post) ])
+<x-mail::button :url="$url">
     View Post
-@endcomponent
+</x-mail::button>
 
 Thanks,<br>
 {{ config('app.name') }}

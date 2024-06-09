@@ -30,8 +30,11 @@ class PostLikeController extends Controller implements HasMiddleware
         // only send an email to never liked post before,
         // here we are using soft delete to check if the post unlike before,
         // if the post not unlike before, then send the email
+
+        // $url = route('posts.show', $post);
+        // dd($url);
         if (!$post->likes()->onlyTrashed()->where('user_id', $request->user()->id)->count()) {
-            Mail::to($post->user)->send(new PostLiked(auth()->user(), $post));
+            Mail::to($post->user)->queue((new PostLiked(auth()->user(), $post))->afterCommit());
         }
 
         return back();

@@ -11,12 +11,13 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PostLiked extends Mailable
+class PostLiked extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public $liker;
     public $post;
+    public $url;
 
     /**
      * Create a new message instance.
@@ -25,6 +26,7 @@ class PostLiked extends Mailable
     {
         $this->liker = $liker;
         $this->post = $post;
+        $this->url = route('posts.show', $post);
     }
 
     /**
@@ -44,6 +46,9 @@ class PostLiked extends Mailable
     {
         return new Content(
             markdown: 'emails.posts.post_liked',
+            with: [
+                'url' => $this->url,
+            ]
         );
     }
 
